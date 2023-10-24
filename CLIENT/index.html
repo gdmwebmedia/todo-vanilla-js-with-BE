@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>To-Do app</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+</head>
+<body>
+    <h1>ToDo App</h1>
+    <div id="loginRegisterwrapper">
+        <section id="login">
+            <h1>Login</h1>
+            <form>
+                <input type="email" id="loginEmail" placeholder="email">
+                <input type="password" id="loginPassword" placeholder="password">
+                <button id="loginSubmit">Login</button>
+            </form>
+        </section>
+        <section id="register">
+            <h1>Register</h1>
+            <form>
+                <input type="text" id="registerUsername" placeholder="username">
+                <input type="email" id="registerEmail" placeholder="email">
+                <input type="password" id="registerPassword" placeholder="password">
+                <button id="registerSubmit">Register</button>
+            </form>
+        </section>
+    </div>
+    <section id="user" hidden>
+        <h1 id="greetings"></h1>
+        <button id="logout">Logout</button>
+    </section>
+    <section id="toDos">
+    </section>
+    <section id="addEditForm">
+        <h1>Add To-Do</h1>
+        <form>
+            <input type="text" placeholder="task name" id="addEditTaskName">
+            <input type="text" placeholder="responsible" id="addEditResponsible">
+            <select name="status" id="addEditTaskStatus">
+                <option value="to-do">to-do</option>
+                <option value="in progress">in progress</option>
+                <option value="blocked">blocked</option>
+                <option value="done">done</option>
+            </select>
+            <button id="addEditSubmit">Add</button>
+        </form>
+    </section>
+    <script type="module" src='main.js'></script>
+</body>
+</html>
