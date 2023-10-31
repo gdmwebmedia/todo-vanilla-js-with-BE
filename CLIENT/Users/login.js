@@ -1,3 +1,5 @@
+import getTodos from '../Todos/getTodos.js'
+
 let url = "http://localhost:3000/"
 
 export function login(e) {
@@ -39,6 +41,8 @@ export function login(e) {
                 taskButtons.forEach(element => {
                     element.style.display = 'block'
                 });
+
+                getTodos()
             }
         })
         )

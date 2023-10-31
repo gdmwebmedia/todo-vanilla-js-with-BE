@@ -35,6 +35,34 @@ app.use(cors()) //see more at https://www.npmjs.com/package/cors
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json()) //we expect JSON data to be sent as payloads
 
+function checkAuthorization(req, res, next){
+  console.log('a trecut prin middleware')
+
+  let token = req.headers.authorization
+  console.log(token)
+
+  jwt.verify(token, publicKey, (err, decoded) => {
+    if (err) {
+      if (err.expiredAt) {
+      //if token expired, the err object will have an 'expiredAt' key
+        res.status(401).json(({
+          error: "expired token"
+        }))
+      } else {
+        res.status(401).json({
+          error: "unauthorized"
+        })
+      }
+    } else {
+      req.email = decoded.email
+      //we have access to the identification data used to generate the token
+      //this way we can write a logic to access only the resources for which
+      //a request is authorized
+      next()
+    }
+  })
+}
+
 app.get('/', (req, res) => {
   res.send('Hello World!')
 });
@@ -76,9 +104,11 @@ app.post ('/login', (req, res) => {
 
         bcrypt.compare(user.password, dbHash, function(err, result) {
             if (result) {
-                let token = jwt.sign(user.email, privateKey, { 
-                  algorithm: 'RS256',
-                  // jwa: 'RSA-OAEP-256'
+                let token = jwt.sign({
+                  data: user.email,
+                  exp: Math.floor(Date.now() / 1000) + (60 * 60)
+                }, privateKey, { 
+                  algorithm: 'RS256'
                 })
 
                 res.json({
@@ -98,6 +128,12 @@ app.post ('/login', (req, res) => {
         })
     }
 
+})
+
+app.get ('/private', checkAuthorization, (req, res) => {
+  res.json({
+    message: "this is a private resource"
+  });
 })
 
 app.listen(port, () => {
